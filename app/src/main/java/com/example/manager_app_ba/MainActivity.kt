@@ -1,6 +1,5 @@
 package com.example.manager_app_ba
 
-import android.app.ActivityManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -15,24 +14,18 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        mDatabase.child("User").child("admin").child("ID").addListenerForSingleValueEvent(object : ValueEventListener{
+        mDatabase.child("User").addListenerForSingleValueEvent(object : ValueEventListener{
+            var str = ""
             override fun onDataChange(snapshot: DataSnapshot) {
-                var nameList =""
-                for (dataSnapshot : DataSnapshot in snapshot.children){
-                    Log.d("is work?",dataSnapshot.getValue().toString())
-                    nameList = nameList+dataSnapshot.getValue().toString()
+                for(dataSnapshot : DataSnapshot in snapshot.children){
+                    str += dataSnapshot.key
                 }
-                binding.newText.setText(nameList)
+                binding.newText.setText(str)
+                Log.d("str",str)
             }
-
             override fun onCancelled(error: DatabaseError) {
                 TODO("Not yet implemented")
             }
         })
-
-
-
-
-
     }
 }
